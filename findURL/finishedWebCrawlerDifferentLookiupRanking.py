@@ -81,6 +81,7 @@ def make_big_index(size):
     letters = ['a','a','a','a','a','a','a','a']
     while len(index)<size:
         word=make_string(letters)
+        #print make_string(letters)
         add_to_index(index,word,'fake')
         for i in range(len(letters)-1,0, -1):
             if letters[i]<'z':
@@ -178,5 +179,5 @@ print lookup(index, 'good')
 
 print('make_big_index(20)')
 print time_execution('make_big_index(20)')
-index100000 = make_big_index(100000)
-print time_execution('lookup(index100000, "good")')
+index10 = make_big_index(1000000)
+print time_execution('lookup(index10, "good")')
