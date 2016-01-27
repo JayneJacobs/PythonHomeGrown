@@ -39,6 +39,13 @@
 
 
 #def record_user_click(index,keyword,url):
+import time
+
+def time_execution(code):
+    start = time.clock()
+    result = eval(code)
+    run_time = time.clock()- start
+    return result, run_time
 
 def record_user_click(index, keyword, url):
     urls = lookup(index, keyword)
@@ -48,7 +55,7 @@ def record_user_click(index, keyword, url):
                 entry[1] = entry[1]+1
 
 def add_to_index(index, keyword, url):
-    # format of index: [[keyword, [[url, count], [url, count],..]],...]
+    #format of index: [[keyword, [[url, count], [url, count],..]],...]
     for entry in index:
         if entry[0] == keyword:
             for urls in entry[1]:
@@ -58,6 +65,30 @@ def add_to_index(index, keyword, url):
             return
     # not found, add new keyword to index
     index.append([keyword, [[url,0]]])
+
+def make_string(p):
+    s=""
+    for e in p:
+        s=s+e
+    return s
+
+#704-778-1806
+
+def make_big_index(size):
+
+    index = []
+    #index = []
+    letters = ['a','a','a','a','a','a','a','a']
+    while len(index)<size:
+        word=make_string(letters)
+        add_to_index(index,word,'fake')
+        for i in range(len(letters)-1,0, -1):
+            if letters[i]<'z':
+                letters[i]=chr(ord(letters[i])+1)
+                break
+            else:
+                letters[i]='a'
+    return index
 
 def get_page(url):
     try:
@@ -125,6 +156,7 @@ def crawl_web(seed):
 def add_page_to_index(index, url, content):
     words = content.split()
     for word in words:
+    #    make_big_index(size)
         add_to_index(index, word, url)
 
 def lookup(index, keyword):
@@ -135,14 +167,16 @@ def lookup(index, keyword):
 
 
 
-
-#Here is an example showing a sequence of interactions:
+print 'Here is an example showing a sequence of interactions:'
 index = crawl_web('http://www.udacity.com/cs101x/index.html')
 print lookup(index, 'good')
 #>>> [['http://www.udacity.com/cs101x/index.html', 0],
 #>>> ['http://www.udacity.com/cs101x/crawling.html', 0]]
-record_user_click(index, 'good', 'http://www.udacity.com/cs101x/crawling.html')
 print lookup(index, 'good')
 #>>> [['http://www.udacity.com/cs101x/index.html', 0],
 #>>> ['http://www.udacity.com/cs101x/crawling.html', 1]]
 
+print('make_big_index(20)')
+print time_execution('make_big_index(20)')
+index100000 = make_big_index(100000)
+print time_execution('lookup(index100000, "good")')
